@@ -52,27 +52,28 @@ class Postear < Sinatra::Base
 
 	post '/postear' do
 		
-			conn = EventMachine::WebSocketClient.connect("ws://localhost:4567/")
-			binding.pry
-			conn.callback do
-		    conn.send_msg "Hello!"
-		    binding.pry
-		    conn.send_msg session["message"]
-  		end
-			#getTwitterCredentials 308762265
-			#getFacebookCredentials 100002221264673
-			#twitterClient
-			#facebookClient
-			session["twitterprovider"] = params["twitter"]
-			session["facebookprovider"] = params["facebook"]
-			session["message"] = params["message"]
-			getPersonUser.each do |person|
-				session[person.itemId.join] = params[person.itemId.join]
-			end
-			#twitterClient.update session["message"] if session["twitterprovider"] == "on"
-			#facebookClient.put_connections("me", "feed", :message => session["message"]) if session["facebookprovider"] == "on"
-			postear
-			#binding.pry
+	
+		conn = EventMachine::WebSocketClient.connect("ws://localhost:4567/")
+		#binding.pry
+		#getTwitterCredentials 308762265
+		#getFacebookCredentials 100002221264673
+		#twitterClient
+		#facebookClient
+		session["twitterprovider"] = params["twitter"]
+		session["facebookprovider"] = params["facebook"]
+		session["message"] = params["message"]
+		getPersonUser.each do |person|
+			session[person.itemId.join] = params[person.itemId.join]
+		end
+		conn.callback do
+	    conn.send_msg "Hello!"
+	    binding.pry
+	    conn.send_msg session["message"]
+		end
+		#twitterClient.update session["message"] if session["twitterprovider"] == "on"
+		#facebookClient.put_connections("me", "feed", :message => session["message"]) if session["facebookprovider"] == "on"
+		postear
+		#binding.pry
 
 		redirect '/posted'
 		
